@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Melodyi Bot - Музыкальный Telegram Бот</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+```
+    body {
+        font-family: 'Arial', sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        color: #fff;
+        overflow-x: hidden;
+    }
+
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+    }
+
+    /* Header */
+    header {
+        padding: 20px 0;
+        background: rgba(0, 0, 0, 0.1);
+        backdrop-filter: blur(10px);
+        position: fixed;
+        top: 0;
+        width: 100%;
+        z-index: 1000;
+        transition: all 0.3s ease;
+    }
+
+    nav {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .logo {
+        font-size: 28px;
+        font-weight: bold;
+        color: #fff;
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+    }
+
+    .logo::before {
+        content: "🎵";
+        margin-right: 10px;
+        font-size: 32px;
+    }
+
+    .nav-links {
+        display: flex;
+        list-style: none;
+        gap: 30px;
+    }
+
+    .nav-links a {
+        color: #fff;
+        text-decoration: none;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        position: relative;
+    }
+
+    .nav-links a:hover {
+        color: #64ffda;
+    }
+
+    .nav-links a::after {
+        content: '';
+        position: absolute;
+        bottom: -5px;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background: #64ffda;
+        transition: width 0.3s ease;
+    }
+
+    .nav-links a:hover::after {
+        width: 100%;
+    }
+
+    .language-selector {
+        display: flex;
+        gap: 10px;
+    }
+
+    .lang-btn {
+        padding: 8px 12px;
+        background: rgba(255, 255, 255, 0.1);
+        border: none;
+        color: #fff;
+        border-radius: 20px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-size: 12px;
+    }
+
+    .lang-btn:hover, .lang-btn.active {
+        background: #64ffda;
+        color: #000;
+    }
+
+    /* Hero Section */
+    .hero {
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        position: relative;
+    }
+
+    .hero-content h1 {
+        font-size: 4rem;
+        margin-bottom: 20px;
+        opacity: 0;
+        animation: fadeInUp 1s ease forwards;
+    }
+
+    .hero-content p {
+        font-size: 1.5rem;
+        margin-bottom: 40px;
+        opacity: 0;
+        animation: fadeInUp 1s ease 0.3s forwards;
+    }
+
+    .cta-button {
+        display: inline-block;
+        padding: 15px 40px;
+        background: linear-gradient(45deg, #64ffda, #00bcd4);
+        color: #000;
+        text-decoration: none;
+        border-radius: 50px;
+        font-weight: bold;
+        font-size: 1.2rem;
+        transition: all 0.3s ease;
+        opacity: 0;
+        animation: fadeInUp 1s ease 0.6s forwards;
+        box-shadow: 0 10px 30px rgba(100, 255, 218, 0.3);
+    }
+
+    .cta-button:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 15px 40px rgba(100, 255, 218, 0.5);
+    }
+
+    /* Features Section */
+    .features {
+        padding: 100px 0;
+        background: rgba(0, 0, 0, 0.1);
+    }
+
+    .features h2 {
+        text-align: center;
+        font-size: 3rem;
+        margin-bottom: 60px;
+    }
+
+    .features-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 40px;
+    }
+
+    .feature-card {
+        background: rgba(255, 255, 255, 0.1);
+        padding: 40px;
+        border-radius: 20px;
+        text-align: center;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        transition: all 0.3s ease;
+    }
+
+    .feature-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    }
+
+    .feature-icon {
+        font-size: 3rem;
+        margin-bottom: 20px;
+    }
+
+    .feature-card h3 {
+        font-size: 1.5rem;
+        margin-bottom: 15px;
+        color: #64ffda;
+    }
+
+    /* Stats Section */
+    .stats {
+        padding: 80px 0;
+        text-align: center;
+    }
+
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 40px;
+    }
+
+    .stat-item {
+        background: rgba(255, 255, 255, 0.1);
+        padding: 30px;
+        border-radius: 15px;
+        backdrop-filter: blur(10px);
+    }
+
+    .stat-number {
+        font-size: 3rem;
+        font-weight: bold;
+        color: #64ffda;
+        margin-bottom: 10px;
+    }
+
+    /* Footer */
+    footer {
+        background: rgba(0, 0, 0, 0.2);
+        padding: 40px 0;
+        text-align: center;
+    }
+
+    .footer-content {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+
+    .social-links {
+        display: flex;
+        gap: 20px;
+    }
+
+    .social-links a {
+        color: #fff;
+        font-size: 1.5rem;
+        transition: all 0.3s ease;
+    }
+
+    .social-links a:hover {
+        color: #64ffda;
+        transform: scale(1.2);
+    }
+
+    /* Animations */
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes float {
+        0%, 100% { transform: translateY(0px); }
+        50% { transform: translateY(-20px); }
+    }
+
+    .floating {
+        animation: float 3s ease-in-out infinite;
+    }
+
+    /* Background Animation */
+    .bg-animation {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        z-index: -1;
+    }
+
+    .bg-animation::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: repeating-linear-gradient(
+            45deg,
+            transparent,
+            transparent 2px,
+            rgba(255, 255, 255, 0.03) 2px,
+            rgba(255, 255, 255, 0.03) 4px
+        );
+        animation: moveBackground 20s linear infinite;
+    }
+
+    @keyframes moveBackground {
+        0% { transform: translate(-50%, -50%) rotate(0deg); }
+        100% { transform: translate(-50%, -50%) rotate(360deg); }
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+        .nav-links {
+            display: none;
+        }
+        
+        .hero-content h1 {
+            font-size: 2.5rem;
+        }
+        
+        .hero-content p {
+            font-size: 1.2rem;
+        }
+        
+        .features h2 {
+            font-size: 2rem;
+        }
+        
+        .footer-content {
+            flex-direction: column;
+            gap: 20px;
+        }
+    }
+
+    /* Playlist Section */
+    .playlist {
+        padding: 100px 0;
+        background: rgba(0, 0, 0, 0.1);
+    }
+
+    .playlist h2 {
+        text-align: center;
+        font-size: 3rem;
+        margin-bottom: 60px;
+    }
+
+    .playlist-demo {
+        background: rgba(255, 255, 255, 0.1);
+        padding: 40px;
+        border-radius: 20px;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        max-width: 600px;
+        margin: 0 auto;
+    }
+
+    .playlist-item {
+        display: flex;
+        align-items: center;
+        padding: 15px;
+        background: rgba(255, 255, 255, 0.05);
+        margin-bottom: 10px;
+        border-radius: 10px;
+        transition: all 0.3s ease;
+    }
+
+    .playlist-item:hover {
+        background: rgba(100, 255, 218, 0.1);
+    }
+
+    .playlist-item::before {
+        content: "🎵";
+        margin-right: 15px;
+        font-size: 1.2rem;
+    }
+</style>
+```
+
+</head>
+<body>
+    <div class="bg-animation"></div>
+
+```
+<header>
+    <nav class="container">
+        <a href="#" class="logo">Melodyi Bot</a>
+        <ul class="nav-links">
+            <li><a href="#home" data-lang="nav-home">Главная</a></li>
+            <li><a href="#features" data-lang="nav-features">Возможности</a></li>
+            <li><a href="#playlist" data-lang="nav-playlist">Плейлисты</a></li>
+            <li><a href="#contact" data-lang="nav-contact">Контакты</a></li>
+        </ul>
+        <div class="language-selector">
+            <button class="lang-btn active" onclick="setLanguage('ru')">🇷🇺 RU</button>
+            <button class="lang-btn" onclick="setLanguage('en')">🇺🇸 EN</button>
+            <button class="lang-btn" onclick="setLanguage('hy')">🇦🇲 HY</button>
+        </div>
+    </nav>
+</header>
+
+<section class="hero" id="home">
+    <div class="container">
+        <div class="hero-content">
+            <h1 data-lang="hero-title">Melodyi Bot</h1>
+            <p data-lang="hero-subtitle">Ваш персональный музыкальный помощник в Telegram</p>
+            <a href="https://t.me/melodyi_bot" class="cta-button" data-lang="hero-cta">Начать пользоваться</a>
+        </div>
+    </div>
+</section>
+
+<section class="features" id="features">
+    <div class="container">
+        <h2 data-lang="features-title">Возможности бота</h2>
+        <div class="features-grid">
+            <div class="feature-card floating">
+                <div class="feature-icon">🎵</div>
+                <h3 data-lang="feature1-title">Поиск музыки</h3>
+                <p data-lang="feature1-desc">Найдите любую песню по названию или исполнителю. Быстро и удобно!</p>
+            </div>
+            <div class="feature-card floating">
+                <div class="feature-icon">📱</div>
+                <h3 data-lang="feature2-title">Inline режим</h3>
+                <p data-lang="feature2-desc">Используйте бота прямо в любом чате через @melodyi_bot</p>
+            </div>
+            <div class="feature-card floating">
+                <div class="feature-icon">📋</div>
+                <h3 data-lang="feature3-title">Создание плейлистов</h3>
+                <p data-lang="feature3-desc">Создавайте свои персональные плейлисты и делитесь ими с друзьями</p>
+            </div>
+            <div class="feature-card floating">
+                <div class="feature-icon">🌍</div>
+                <h3 data-lang="feature4-title">Многоязычность</h3>
+                <p data-lang="feature4-desc">Поддержка русского, английского и армянского языков</p>
+            </div>
+            <div class="feature-card floating">
+                <div class="feature-icon">⚡</div>
+                <h3 data-lang="feature5-title">Быстрая загрузка</h3>
+                <p data-lang="feature5-desc">Мгновенная загрузка музыки в высоком качестве</p>
+            </div>
+            <div class="feature-card floating">
+                <div class="feature-icon">🎧</div>
+                <h3 data-lang="feature6-title">Высокое качество</h3>
+                <p data-lang="feature6-desc">Все треки в отличном качестве до 320 kbps</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="playlist" id="playlist">
+    <div class="container">
+        <h2 data-lang="playlist-title">Создавайте плейлисты</h2>
+        <div class="playlist-demo">
+            <h3 data-lang="playlist-demo-title">Пример плейлиста:</h3>
+            <div class="playlist-item">
+                <span>Miyagi - Captain</span>
+            </div>
+            <div class="playlist-item">
+                <span>VNVS - Армянский рэп</span>
+            </div>
+            <div class="playlist-item">
+                <span>Ваша любимая песня</span>
+            </div>
+            <p style="margin-top: 20px; text-align: center; opacity: 0.8;" data-lang="playlist-demo-desc">
+                Создавайте собственные плейлисты и наслаждайтесь музыкой!
+            </p>
+        </div>
+    </div>
+</section>
+
+<section class="stats">
+    <div class="container">
+        <h2 data-lang="stats-title">Статистика</h2>
+        <div class="stats-grid">
+            <div class="stat-item">
+                <div class="stat-number">10K+</div>
+                <p data-lang="stats-users">Активных пользователей</p>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">1M+</div>
+                <p data-lang="stats-songs">Песен скачано</p>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">24/7</div>
+                <p data-lang="stats-uptime">Время работы</p>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">3</div>
+                <p data-lang="stats-languages">Языка поддержки</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<footer id="contact">
+    <div class="container">
+        <div class="footer-content">
+            <div>
+                <h3>Melodyi Bot</h3>
+                <p data-lang="footer-desc">Лучший музыкальный бот для Telegram</p>
+            </div>
+            <div class="social-links">
+                <a href="https://t.me/melodyi_bot" title="Telegram Bot">📱</a>
+                <a href="https://t.me/ldftcer" title="Developer">👨‍💻</a>
+            </div>
+        </div>
+        <p data-lang="footer-copyright">&copy; 2024 Melodyi Bot. Все права защищены.</p>
+    </div>
+</footer>
+
+<script>
+    // Языковые переводы
+    const translations = {
+        ru: {
+            'nav-home': 'Главная',
+            'nav-features': 'Возможности',
+            'nav-playlist': 'Плейлисты',
+            'nav-contact': 'Контакты',
+            'hero-title': 'Melodyi Bot',
+            'hero-subtitle': 'Ваш персональный музыкальный помощник в Telegram',
+            'hero-cta': 'Начать пользоваться',
+            'features-title': 'Возможности бота',
+            'feature1-title': 'Поиск музыки',
+            'feature1-desc': 'Найдите любую песню по названию или исполнителю. Быстро и удобно!',
+            'feature2-title': 'Inline режим',
+            'feature2-desc': 'Используйте бота прямо в любом чате через @melodyi_bot',
+            'feature3-title': 'Создание плейлистов',
+            'feature3-desc': 'Создавайте свои персональные плейлисты и делитесь ими с друзьями',
+            'feature4-title': 'Многоязычность',
+            'feature4-desc': 'Поддержка русского, английского и армянского языков',
+            'feature5-title': 'Быстрая загрузка',
+            'feature5-desc': 'Мгновенная загрузка музыки в высоком качестве',
+            'feature6-title': 'Высокое качество',
+            'feature6-desc': 'Все треки в отличном качестве до 320 kbps',
+            'playlist-title': 'Создавайте плейлисты',
+            'playlist-demo-title': 'Пример плейлиста:',
+            'playlist-demo-desc': 'Создавайте собственные плейлисты и наслаждайтесь музыкой!',
+            'stats-title': 'Статистика',
+            'stats-users': 'Активных пользователей',
+            'stats-songs': 'Песен скачано',
+            'stats-uptime': 'Время работы',
+            'stats-languages': 'Языка поддержки',
+            'footer-desc': 'Лучший музыкальный бот для Telegram',
+            'footer-copyright': '© 2024 Melodyi Bot. Все права защищены.'
+        },
+        en: {
+            'nav-home': 'Home',
+            'nav-features': 'Features',
+            'nav-playlist': 'Playlists',
+            'nav-contact': 'Contact',
+            'hero-title': 'Melodyi Bot',
+            'hero-subtitle': 'Your personal music assistant in Telegram',
+            'hero-cta': 'Start Using',
+            'features-title': 'Bot Features',
+            'feature1-title': 'Music Search',
+            'feature1-desc': 'Find any song by title or artist. Fast and convenient!',
+            'feature2-title': 'Inline Mode',
+            'feature2-desc': 'Use the bot directly in any chat via @melodyi_bot',
+            'feature3-title': 'Create Playlists',
+            'feature3-desc': 'Create your personal playlists and share them with friends',
+            'feature4-title': 'Multilingual',
+            'feature4-desc': 'Support for Russian, English and Armenian languages',
+            'feature5-title': 'Fast Download',
+            'feature5-desc': 'Instant music download in high quality',
+            'feature6-title': 'High Quality',
+            'feature6-desc': 'All tracks in excellent quality up to 320 kbps',
+            'playlist-title': 'Create Playlists',
+            'playlist-demo-title': 'Playlist Example:',
+            'playlist-demo-desc': 'Create your own playlists and enjoy music!',
+            'stats-title': 'Statistics',
+            'stats-users': 'Active Users',
+            'stats-songs': 'Songs Downloaded',
+            'stats-uptime': 'Uptime',
+            'stats-languages': 'Supported Languages',
+            'footer-desc': 'Best music bot for Telegram',
+            'footer-copyright': '© 2024 Melodyi Bot. All rights reserved.'
+        },
+        hy: {
+            'nav-home': 'Գլխավոր',
+            'nav-features': 'Հնարավորություններ',
+            'nav-playlist': 'Նվագացանկեր',
+            'nav-contact': 'Կապ',
+            'hero-title': 'Melodyi Bot',
+            'hero-subtitle': 'Ձեր անձնական երաժշտական օգնականը Telegram-ում',
+            'hero-cta': 'Սկսել օգտագործել',
+            'features-title': 'Բոտի հնարավորությունները',
+            'feature1-title': 'Երաժշտության որոնում',
+            'feature1-desc': 'Գտեք ցանկացած երգ անվանումով կամ կատարողով: Արագ և հարմար:',
+            'feature2-title': 'Inline ռեժիմ',
+            'feature2-desc': 'Օգտագործեք բոտը ուղղակի ցանկացած չատում @melodyi_bot-ի միջոցով',
+            'feature3-title': 'Նվագացանկերի ստեղծում',
+            'feature3-desc': 'Ստեղծեք ձեր անհատական նվագացանկերը և կիսվեք ընկերների հետ',
+            'feature4-title': 'Բազմալեզու',
+            'feature4-desc': 'Ռուսերեն, անգլերեն և հայերեն լեզուների աջակցություն',
+            'feature5-title': 'Արագ ներբեռնում',
+            'feature5-desc': 'Երաժշտության ակնթարթային ներբեռնում բարձր որակով',
+            'feature6-title': 'Բարձր որակ',
+            'feature6-desc': 'Բոլոր երգերը գերազանց որակով մինչև 320 kbps',
+            'playlist-title': 'Ստեղծեք նվագացանկեր',
+            'playlist-demo-title': 'Նվագացանկի օրինակ՝',
+            'playlist-demo-desc': 'Ստեղծեք ձեր սեփական նվագացանկերը և վայելեք երաժշտությունը:',
+            'stats-title': 'Վիճակագրություն',
+            'stats-users': 'Ակտիվ օգտատերեր',
+            'stats-songs': 'Ներբեռնված երգեր',
+            'stats-uptime': 'Աշխատանքի ժամանակ',
+            'stats-languages': 'Աջակցվող լեզուներ',
+            'footer-desc': 'Լավագույն երաժշտական բոտը Telegram-ի համար',
+            'footer-copyright': '© 2024 Melodyi Bot: Բոլոր իրավունքները պահպանված են:'
+        }
+    };
+
+    let currentLanguage = 'ru';
+
+    function setLanguage(lang) {
+        currentLanguage = lang;
+        
+        // Обновляем активную кнопку языка
+        document.querySelectorAll('.lang-btn').forEach(btn => {
+            btn.classList.remove('active');
+        });
+        event.target.classList.add('active');
+        
+        // Обновляем весь текст на странице
+        document.querySelectorAll('[data-lang]').forEach(element => {
+            const key = element.getAttribute('data-lang');
+            if (translations[lang] && translations[lang][key]) {
+                element.textContent = translations[lang][key];
+            }
+        });
+    }
+
+    // Плавная прокрутка для навигации
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                target.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }
+        });
+    });
+
+    // Анимация при скролле
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.style.opacity = '1';
+                entry.target.style.transform = 'translateY(0)';
+            }
+        });
+    }, observerOptions);
+
+    // Применяем анимацию к карточкам
+    document.querySelectorAll('.feature-card, .stat-item').forEach(card => {
+        card.style.opacity = '0';
+        card.style.transform = 'translateY(30px)';
+        card.style.transition = 'all 0.6s ease';
+        observer.observe(card);
+    });
+
+    // Анимация фона для header при скролле
+    window.addEventListener('scroll', () => {
+        const header = document.querySelector('header');
+        if (window.scrollY > 100) {
+            header.style.background = 'rgba(0, 0, 0, 0.9)';
+        } else {
+            header.style.background = 'rgba(0, 0, 0, 0.1)';
+        }
+    });
+</script>
+```
+
+</body>
+</html>
